@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="fav icon" href="static/images/ciencia.png" type="image/x-icon">
+    <link rel="stylesheet" href="static/css/index.css">
+    <title>AnalitysIFTO</title>
+</head>
+<body>
+    <div class="box">
+        <form class="form-container">
+            <div class="input-group">
+                <div class="input-item">
+                    <label for="entrada-1" class="input-label">pH:</label>
+                    <input type="text" id="entrada-1" class="text-input" pattern="[0-9,.]*">
+                </div>
+                <div class="input-item">
+                    <label for="entrada-2" class="input-label">Oxigênio Dissolvido:</label>
+                    <input type="text" id="entrada-2" class="text-input" pattern="[0-9,.]*">
+                </div>
+                <div class="input-item">
+                    <label for="entrada-3" class="input-label">Cor:</label>
+                    <input type="text" id="entrada-3" class="text-input" pattern="[0-9,.]*">
+                </div>
+                <div class="input-item">
+                    <label for="entrada-4" class="input-label">Turbidez:</label>
+                    <input type="text" id="entrada-4" class="text-input" pattern="[0-9,.]*">
+                </div>
+                <div class="input-item">
+                    <label for="entrada-5" class="input-label">Nitrito:</label>
+                    <input type="text" id="entrada-5" class="text-input" pattern="[0-9,.]*">
+                </div>
+                <div class="input-item">
+                    <label for="entrada-6" class="input-label">Nitrato:</label>
+                    <input type="text" id="entrada-6" class="text-input" pattern="[0-9,.]*">
+                </div>
+                <div class="input-item">
+                    <label for="entrada-7" class="input-label">Nitrogênio Amoniacal:</label>
+                    <input type="text" id="entrada-7" class="text-input" pattern="[0-9,.]*">
+                </div>
+            </div>
+        </form>
+        <div class="info-labels">
+
+            <div class="info-box">
+                <label class="info-label">pH:<p>34</p></label>
+            </div>
+            <div class="info-box">
+                <label class="info-label">Oxigênio Dissolvido<p>5 mg/L</p></label>
+            </div>
+            <div class="info-box">
+                <label class="info-label">Cor<p>75 ml Pt/L</p></label>
+            </div>
+            <div class="info-box">
+                <label class="info-label">Turbidez<p>100 NTU</p></label>
+            </div>
+            <div class="info-box">
+                <label class="info-label">Nitrito<p>1,0 mg/L</p></label>
+            </div>
+            <div class="info-box">
+                <label class="info-label">Nitrato<p>10 mg/L</p></label>
+            </div>
+            <div class="info-box">
+                <label class="info-label">Nitrogênio Amoniacal<p>3,7 mg/L, pH =7,5</p></label>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Capturando os elementos de input e caixas de informações
+            const inputs = document.querySelectorAll('.text-input');
+            const infoBoxes = document.querySelectorAll('.info-box');
+
+            // Função para extrair números de uma string
+            function extractNumbers(text) {
+                return text.match(/\d+(\,\d+)?/g); // Extrai números e números decimais com vírgula
+            }
+
+            // Adicionando evento de mudança para cada input
+            inputs.forEach((input, index) => {
+                // Permitindo apenas valores numéricos
+                input.addEventListener('input', function () {
+                    this.value = this.value.replace(/[^0-9,.]/g, '');
+                });
+
+                // Verificando correspondência com os valores nas labels
+                input.addEventListener('input', function () {
+                    const inputValue = extractNumbers(input.value.trim());
+                    const infoBox = infoBoxes[index];
+                    const paragraphText = infoBox.querySelector('p').textContent.trim().toLowerCase();
+
+                    // Extraindo e comparando os números do input com os números do parágrafo
+                    if (index === 6) { // Índice 6 corresponde ao Nitrogênio Amoniacal
+                        if (inputValue && inputValue.join('') === '3,7') {
+                            infoBox.style.backgroundColor = '#03cc00'; // Verde se corresponder
+                        } else {
+                            infoBox.style.backgroundColor = '#ff0000'; // Vermelho se não corresponder
+                        }
+                    } else {
+                        const paragraphNumbers = extractNumbers(paragraphText);
+                        if (inputValue && paragraphNumbers && inputValue.join('') === paragraphNumbers.join('')) {
+                            infoBox.style.backgroundColor = '#03cc00'; // Verde se corresponder
+                        } else {
+                            infoBox.style.backgroundColor = '#ff0000'; // Vermelho se não corresponder
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
