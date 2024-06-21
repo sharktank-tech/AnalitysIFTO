@@ -42,9 +42,8 @@
             </div>
         </form>
         <div class="info-labels">
-
             <div class="info-box">
-                <label class="info-label">pH:<p>34</p></label>
+                <label class="info-label">pH:<p>6 a 9</p></label>
             </div>
             <div class="info-box">
                 <label class="info-label">Oxigênio Dissolvido<p>5 mg/L</p></label>
@@ -87,20 +86,26 @@
 
                 // Verificando correspondência com os valores nas labels
                 input.addEventListener('input', function () {
-                    const inputValue = extractNumbers(input.value.trim());
+                    const inputValue = parseFloat(input.value.trim().replace(',', '.')); // Converter para float
                     const infoBox = infoBoxes[index];
                     const paragraphText = infoBox.querySelector('p').textContent.trim().toLowerCase();
 
                     // Extraindo e comparando os números do input com os números do parágrafo
-                    if (index === 6) { // Índice 6 corresponde ao Nitrogênio Amoniacal
-                        if (inputValue && inputValue.join('') === '3,7') {
+                    if (index === 0) { // Índice 0 corresponde ao pH
+                        if (inputValue >= 6 && inputValue <= 9) {
+                            infoBox.style.backgroundColor = '#03cc00'; // Verde se estiver no intervalo
+                        } else {
+                            infoBox.style.backgroundColor = '#ff0000'; // Vermelho se não estiver no intervalo
+                        }
+                    } else if (index === 6) { // Índice 6 corresponde ao Nitrogênio Amoniacal
+                        if (inputValue && inputValue === 3.7) {
                             infoBox.style.backgroundColor = '#03cc00'; // Verde se corresponder
                         } else {
                             infoBox.style.backgroundColor = '#ff0000'; // Vermelho se não corresponder
                         }
                     } else {
                         const paragraphNumbers = extractNumbers(paragraphText);
-                        if (inputValue && paragraphNumbers && inputValue.join('') === paragraphNumbers.join('')) {
+                        if (inputValue && paragraphNumbers && inputValue == paragraphNumbers.join('')) {
                             infoBox.style.backgroundColor = '#03cc00'; // Verde se corresponder
                         } else {
                             infoBox.style.backgroundColor = '#ff0000'; // Vermelho se não corresponder
